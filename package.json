@@ -1,0 +1,17 @@
+{
+    "name": "connect-uglify-js"
+  , "version": "0.0.0"
+  , "description": "Middleware for Connect to uglify JavaScript files"
+  , "keywords": ["javascript","uglify-js","connect","middleware"]
+  , "author": "eric thul <thul.eric@gmail.com>"
+  , "contributors": [{"name": "eric thul", "email": "thul.eric@gmail.com"}]
+  , "dependencies": {"uglify-js": ">= 1.2.5"}
+  , "devDependencies": {"jasmine-node": ">= 1.0.13"}
+  , "licenses": ["MIT"]
+  , "bugs": "https://github.com/ethul/connect-uglify-js/issues"
+  , "main": "./lib/uglify.js"
+  , "repository": {
+      "type": "git"
+    , "url": "https://ethul@github.com/ethul/connect-uglify-js.git"
+  }
+}
