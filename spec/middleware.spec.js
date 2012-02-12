@@ -2,19 +2,25 @@ var fs = require("fs")
   , path = require("path")
   , request = require("request")
   , connect = require("connect")
-  , middleware = require("../lib/middleware");
+  , middleware = require("../lib/middleware")
+  , memory = require("../lib/memory-strategy");
 
 describe("when the uglify-js middleware is used by connect", function() {
   beforeEach(function() {
     this.root = __dirname + "/assets/javascripts";
     this.encoding = "utf8";
+    this.memory = {};
+    this.strategy = memory(this.memory);
   });
 
   beforeEach(function() {
     var port = 12341;
     this.uri = "http://localhost:" + port;
     this.server = connect.createServer();
-    this.server.use(middleware(this.root,{encoding: this.encoding}));
+    this.server.use(middleware(this.root,{
+      encoding: this.encoding,
+      strategy: this.strategy
+    }));
     this.server.listen(port);
   });
 
@@ -131,6 +137,52 @@ describe("when the uglify-js middleware is used by connect", function() {
     it("should respond with an empty body", function() {
       head(this.uri + this.pathname, function(error,response,body) {
         expect(body).toEqual(undefined);
+      });
+    });
+  });
+
+  describe("when an existing javascript file is requested that is memory with a GET", function() {
+    beforeEach(function() {
+      var javascript = this.javascript;
+      this.existsSpy = spyOn(path,"exists").andCallFake(function(file,callback){callback(true);});
+      this.readFileSpy = spyOn(fs,"readFile").andCallFake(function(file,encoding,callback){callback(false,javascript);});
+    });
+    beforeEach(function() {
+      this.pathname = "/abc/xyz/inmemory.js";
+      this.memory[this.root + this.pathname] = this.uglified;
+    });
+    it("should respond with an HTTP 200 status", function() {
+      get(this.uri + this.pathname, function(error,response,body) {
+        expect(response.statusCode).toEqual(200);
+      });
+    });
+    it("should respond with the text/javascript content type", function() {
+      get(this.uri + this.pathname, function(error,response,body) {
+        expect(response.headers["content-type"]).toEqual("application/javascript");
+      });
+    });
+    it("should respond with the length of the uglified javascript as content length", function() {
+      var expected = this.uglified.length.toString();
+      get(this.uri + this.pathname, function(error,response,body) {
+        expect(response.headers["content-length"]).toEqual(expected);
+      });
+    });
+    it("should respond with the uglified javascript file request", function() {
+      var expected = this.uglified;
+      get(this.uri + this.pathname, function(error,response,body) {
+        expect(body).toEqual(expected);
+      });
+    });
+    it("should not call exists on the path", function() {
+      var spy = this.existsSpy;
+      get(this.uri + this.pathname, function(error,response,body) {
+        expect(spy).not.toHaveBeenCalled();
+      });
+    });
+    it("should not call read on the fs", function() {
+      var spy = this.readFileSpy;
+      get(this.uri + this.pathname, function(error,response,body) {
+        expect(spy).not.toHaveBeenCalled();
       });
     });
   });
