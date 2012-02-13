@@ -11,7 +11,10 @@
     , "request": ">= 2.9.100"
     , "connect": ">= 1.8.5"
   }
-  , "licenses": ["MIT"]
+  , "licenses": [{
+      "type": "MIT"
+    , "url": "https://github.com/ethul/connect-uglify-js/raw/master/LICENSE"
+  }]
   , "bugs": "https://github.com/ethul/connect-uglify-js/issues"
   , "main": "./index.js"
   , "repository": {
