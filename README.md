@@ -49,7 +49,7 @@ Above we have added the middleware to our application mounted under
 `/assets`. It is recommended to pick a mount point, otherwise the
 middleware will conflict with the serving of static files.
 
-To complete the example, we have write our HTML to request the uglified
+To complete the example, we can write our HTML to request the uglified
 JavaScript as follows, assuming `index.js` exists in
 `__dirname/public/javascripts`.
 
