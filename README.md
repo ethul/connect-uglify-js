@@ -1,3 +1,4 @@
+[![build status](https://secure.travis-ci.org/ethul/connect-uglify-js.png)](http://travis-ci.org/ethul/connect-uglify-js)
 # Connect-uglify-js
 
 Connect-uglify-js is middleware for
