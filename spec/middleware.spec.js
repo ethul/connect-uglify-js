@@ -2,6 +2,7 @@ var fs = require("fs")
   , path = require("path")
   , request = require("request")
   , connect = require("connect")
+  , http = require("http")
   , middleware = require("../lib/middleware")
   , memory = require("../lib/memory-strategy");
 
@@ -16,12 +17,12 @@ describe("when the uglify-js middleware is used by connect", function() {
   beforeEach(function() {
     var port = 12341;
     this.uri = "http://localhost:" + port;
-    this.server = connect.createServer();
-    this.server.use(middleware(this.root,{
+    this.connect = connect();
+    this.connect.use(middleware(this.root,{
       encoding: this.encoding,
       strategy: this.strategy
     }));
-    this.server.listen(port);
+    this.server = http.createServer(this.connect).listen(port);
   });
 
   beforeEach(function() {
@@ -136,7 +137,7 @@ describe("when the uglify-js middleware is used by connect", function() {
     });
     it("should respond with an empty body", function() {
       head(this.uri + this.pathname, function(error,response,body) {
-        expect(body).toEqual(undefined);
+        expect(body).toEqual('');
       });
     });
   });
@@ -218,7 +219,7 @@ describe("when the uglify-js middleware is used by connect", function() {
     beforeEach(function() {
       var middlewareStub = function(request,response,next){response.end();};
       this.middlewareSpy = jasmine.createSpy("middleware").andCallFake(middlewareStub);
-      this.server.use(this.middlewareSpy);
+      this.connect.use(this.middlewareSpy);
     });
     beforeEach(function() {
       this.pathname = "/abc/xyz/a.css";
@@ -260,7 +261,7 @@ describe("when the uglify-js middleware is used by connect", function() {
     beforeEach(function() {
       var middlewareStub = function(request,response,next){response.end();};
       this.middlewareSpy = jasmine.createSpy("middleware").andCallFake(middlewareStub);
-      this.server.use(this.middlewareSpy);
+      this.connect.use(this.middlewareSpy);
       this.pathname = "/abc/xyz/post.js";
     });
     it("should ignore the request invoking the next middleware", function() {
@@ -274,7 +275,7 @@ describe("when the uglify-js middleware is used by connect", function() {
     beforeEach(function() {
       var middlewareStub = function(request,response,next){response.end();};
       this.middlewareSpy = jasmine.createSpy("middleware").andCallFake(middlewareStub);
-      this.server.use(this.middlewareSpy);
+      this.connect.use(this.middlewareSpy);
     });
     describe("when the request path escapes the root path", function() {
       beforeEach(function() {
