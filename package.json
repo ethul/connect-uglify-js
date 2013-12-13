@@ -1,11 +1,11 @@
 {
     "name": "connect-uglify-js"
-  , "version": "0.0.1"
+  , "version": "0.0.2"
   , "description": "Middleware for Connect to uglify JavaScript files"
   , "keywords": ["javascript","uglify-js","connect","middleware"]
   , "author": "eric thul <thul.eric@gmail.com>"
   , "contributors": [{"name": "eric thul", "email": "thul.eric@gmail.com"}]
-  , "dependencies": {"uglify-js": ">= 1.2.5","bassline": ">= 0.0.4"}
+  , "dependencies": {"uglify-js": ">= 2","bassline": ">= 0.0.4"}
   , "devDependencies": {
       "jasmine-node": ">= 1.0.13"
     , "request": ">= 2.9.100"
