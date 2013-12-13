@@ -1,6 +1,6 @@
 {
     "name": "connect-uglify-js"
-  , "version": "0.0.1"
+  , "version": "0.0.2"
   , "description": "Middleware for Connect to uglify JavaScript files"
   , "keywords": ["javascript","uglify-js","connect","middleware"]
   , "author": "eric thul <thul.eric@gmail.com>"
